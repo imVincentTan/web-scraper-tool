@@ -2,28 +2,20 @@ from typing import Any
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
+import os
 
-data = [
-    {
-        'id': '',
-        'url': '',
-        'listing_element': [['find_elements', 'class', 'job-link']],
-        'targets': {
-            'link': [['get_attribute', 'href']],
-            'posting_date': [['find_element', 'class', 'posting-date'], ['text']],
-            'last_updated': [['find_element', 'class', 'time-elapsed'], ['text']]
-        }
-    }
-]
+data: list[dict[str, Any]]
+with open(os.path.abspath('data.json'), 'r') as json_file:
+    data = json.load(json_file)
 
-def get_by_from_attribute(attribute):
+def get_by_from_attribute(attribute: str):
     retval: Any
     match attribute:
         case 'class':
             retval = By.CLASS_NAME
     return retval
     
-def eval_command(element, command):
+def eval_command(element, command: list[str]):
     retval: Any
     match command[0]:
         case 'find_elements':
@@ -36,7 +28,7 @@ def eval_command(element, command):
             retval = element.text
     return retval
 
-def parse_selection(element, commands):
+def parse_selection(element, commands: list[list[str]]):
     retval = element
     for command in commands:
         retval = eval_command(retval, command)
