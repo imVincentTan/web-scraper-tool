@@ -1,3 +1,4 @@
+import time
 from typing import Any
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -13,19 +14,31 @@ def get_by_from_attribute(attribute: str):
     match attribute:
         case 'class':
             retval = By.CLASS_NAME
+        case 'tag_name':
+            retval = By.TAG_NAME
     return retval
     
 def eval_command(element, command: list[str]):
     retval: Any
-    match command[0]:
-        case 'find_elements':
-            retval = element.find_elements(get_by_from_attribute(command[1]), command[2])
-        case 'find_element':
-            retval = element.find_element(get_by_from_attribute(command[1]), command[2])
-        case 'get_attribute':
-            retval = element.get_attribute(command[1])
-        case 'text':
-            retval = element.text
+    num_attepts = 3
+    attempts = 0
+    while attempts < num_attepts:
+        try:
+            match command[0]:
+                case 'find_elements':
+                    retval = element.find_elements(get_by_from_attribute(command[1]), command[2])
+                case 'find_element':
+                    retval = element.find_element(get_by_from_attribute(command[1]), command[2])
+                case 'get_attribute':
+                    retval = element.get_attribute(command[1])
+                case 'text':
+                    retval = element.text
+        except:
+            print(f'an error occured with selenium on attempt {attempts}')
+            time.sleep(3)
+            attempts += 1
+        else:
+            break
     return retval
 
 def parse_selection(element, commands: list[list[str]]):
