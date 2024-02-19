@@ -1,4 +1,4 @@
-# new-job-tool
+# web-scraper-tool
 a tool to web scrape websites
 
 ## how to run
