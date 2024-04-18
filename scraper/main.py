@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "Hello, World!"
+    return "Hello, World! i scrape websites"
 
 
 @app.route("/<target>")
@@ -34,3 +34,8 @@ def scrape_target(target):
             print(f'Error: target "{target}" does not match any valid target.')
     jobs = a.scrape()
     return json.dumps(jobs, indent=4)
+
+
+if __name__ == "__main__":
+    print('starting scraper app on port 5000:')
+    app.run(port='5000')
