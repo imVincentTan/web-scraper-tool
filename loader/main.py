@@ -5,6 +5,7 @@ from psycopg2 import extras
 
 from cleaners.base_cleaner import BaseCleaner
 from cleaners.job_boards.amazon import AmazonJobCleaner
+from cleaners.job_boards.apple import AppleJobCleaner
 
 app = Flask(__name__)
 
@@ -27,24 +28,24 @@ def hello_world():
 
 @app.route("/job_boards/<target>")
 def load_target(target):
-    cleaner = None
+    cleaner = BaseCleaner(None)
     r = requests.get(f"{SCRAPER}/{target}")
     match target:
-        # case 'apple':
-        #     a = AppleJobScraper()
+        case 'apple':
+            cleaner = AppleJobCleaner(r.json())
         case 'amazon':
             cleaner = AmazonJobCleaner(r.json())
         # case 'google':
-        #     a = GoogleJobScraper()
+        #     cleaner = GoogleJobScraper()
         # case 'microsoft':
-        #     a = MicrosoftJobScraper()
+        #     cleaner = MicrosoftJobScraper()
         case _:
             print(f'Error: target "{target}" does not match any valid target.')
 
     clean_input = cleaner.get_clean_data()
     columns = ['company', 'company_id', 'link', 'title', 'location', 'posting_date', 'last_updated', 'details']
 
-    query = f"""INSERT INTO public.jobs ({", ".join(columns)}) VALUES %s"""
+    query = f"""INSERT INTO public.jobs ({", ".join(columns)}) VALUES %s ON CONFLICT DO NOTHING"""
     
     extras.execute_values(cur, query, clean_input)
 

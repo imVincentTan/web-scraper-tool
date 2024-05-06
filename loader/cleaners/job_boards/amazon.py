@@ -1,19 +1,11 @@
 from datetime import datetime
-from cleaners.base_cleaner import BaseCleaner
+from cleaners.job_boards.job_boards_base_cleaner import JobBoardsBaseCleaner
 
-class AmazonJobCleaner(BaseCleaner):
-    def get_clean_data(self):
-        return self.data
-
+class AmazonJobCleaner(JobBoardsBaseCleaner):
     def clean(self):
-        self.set_columns()
         self.clean_data()
         self.organize_data()
         self.data_to_list_of_tuples()
-
-    # TODO: this should probably go somewhere better
-    def set_columns(self):
-        self.columns = ['company', 'company_id', 'link', 'title', 'location', 'posting_date', 'last_updated', 'details']
 
     def clean_data(self):
         def get_company_id_from_link(link):
