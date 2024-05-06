@@ -11,4 +11,4 @@ class BaseCleaner():
         return self.data
     
     def data_to_list_of_tuples(self):
-        self.data = [[row[col] for col in self.columns] for row in self.data]
+        self.data = [[row[col] if col in row else None for col in self.columns] for row in self.data]

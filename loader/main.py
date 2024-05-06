@@ -6,6 +6,8 @@ from psycopg2 import extras
 from cleaners.base_cleaner import BaseCleaner
 from cleaners.job_boards.amazon import AmazonJobCleaner
 from cleaners.job_boards.apple import AppleJobCleaner
+from cleaners.job_boards.google import GoogleJobCleaner
+from cleaners.job_boards.microsoft import MicrosoftJobCleaner
 
 app = Flask(__name__)
 
@@ -35,10 +37,10 @@ def load_target(target):
             cleaner = AppleJobCleaner(r.json())
         case 'amazon':
             cleaner = AmazonJobCleaner(r.json())
-        # case 'google':
-        #     cleaner = GoogleJobScraper()
-        # case 'microsoft':
-        #     cleaner = MicrosoftJobScraper()
+        case 'google':
+            cleaner = GoogleJobCleaner(r.json())
+        case 'microsoft':
+            cleaner = MicrosoftJobCleaner(r.json())
         case _:
             print(f'Error: target "{target}" does not match any valid target.')
 
