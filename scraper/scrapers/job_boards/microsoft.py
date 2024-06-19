@@ -19,8 +19,8 @@ class MicrosoftJobScraper(BaseScraper):
 
         elements = browser.find_element(By.CLASS_NAME, 'ms-List').find_elements(By.CLASS_NAME, 'ms-List-cell')
 
-        for i in range(len(browser.find_element(By.CLASS_NAME, 'ms-List').find_elements(By.CLASS_NAME, 'ms-List-cell'))):
-            browser.find_element(By.CLASS_NAME, 'ms-List').find_elements(By.CLASS_NAME, 'ms-List-cell')[i].click()
+        for i in range(len(elements)):
+            elements[i].click()
             job_details = {}
             job_details['link'] = browser.current_url
 

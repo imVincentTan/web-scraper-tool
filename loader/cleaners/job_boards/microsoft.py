@@ -20,13 +20,10 @@ class MicrosoftJobCleaner(JobBoardsBaseCleaner):
             except:
                 retval = None
             return retval
-        
-        def clean_date(date):
-            return datetime.strptime(date, "%B %d, %Y")
 
         for ind, a in enumerate(self.data):
             self.data[ind]['company'] = 'microsoft'
             self.data[ind]['company_id'] = get_company_id_from_link(a['link'])
-            self.data[ind]['posting_date'] = clean_date(a['posting_date'])
+            self.data[ind]['posting_date'] = a['posting_date']
 
 
