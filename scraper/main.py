@@ -7,6 +7,7 @@ import os
 from scrapers.base_scraper import BaseScraper
 from scrapers.job_boards.apple import AppleJobScraper
 from scrapers.job_boards.amazon import AmazonJobScraper
+from scrapers.job_boards.ea import EaJobScraper
 from scrapers.job_boards.google import GoogleJobScraper
 from scrapers.job_boards.microsoft import MicrosoftJobScraper
 from flask import Flask
@@ -26,6 +27,8 @@ def scrape_target(target):
             a = AppleJobScraper()
         case 'amazon':
             a = AmazonJobScraper()
+        case 'ea':
+            a = EaJobScraper()
         case 'google':
             a = GoogleJobScraper()
         case 'microsoft':

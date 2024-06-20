@@ -6,6 +6,7 @@ from psycopg2 import extras
 from cleaners.base_cleaner import BaseCleaner
 from cleaners.job_boards.amazon import AmazonJobCleaner
 from cleaners.job_boards.apple import AppleJobCleaner
+from cleaners.job_boards.ea import EaJobCleaner
 from cleaners.job_boards.google import GoogleJobCleaner
 from cleaners.job_boards.microsoft import MicrosoftJobCleaner
 
@@ -37,6 +38,8 @@ def load_target(target):
             cleaner = AppleJobCleaner(r.json())
         case 'amazon':
             cleaner = AmazonJobCleaner(r.json())
+        case 'ea':
+            cleaner = EaJobCleaner(r.json())
         case 'google':
             cleaner = GoogleJobCleaner(r.json())
         case 'microsoft':
