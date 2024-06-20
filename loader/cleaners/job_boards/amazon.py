@@ -23,21 +23,3 @@ class AmazonJobCleaner(JobBoardsBaseCleaner):
             self.data[ind]['company_id'] = get_company_id_from_link(a['link'])
             self.data[ind]['posting_date'] = None
             self.data[ind]['last_updated'] = a['last_updated']
-
-    def organize_data(self):
-        def move_extra_columns_to_details_json(raw):
-            details = {}
-            for key in raw:
-                if not key in self.columns:
-                    details[key] = details[key]
-                    del raw[key]
-            if details:
-                raw['details'] = details
-            else:
-                raw['details'] = None
-            return raw
-        
-        self.data = [move_extra_columns_to_details_json(a) for a in self.data]
-
-    def data_to_list_of_tuples(self):
-        self.data = [[row[col] for col in self.columns] for row in self.data]
