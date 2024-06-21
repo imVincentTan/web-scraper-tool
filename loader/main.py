@@ -1,3 +1,4 @@
+import json
 from flask import Flask
 import requests
 import psycopg2
@@ -24,6 +25,13 @@ conn = psycopg2.connect(
 # TODO: put the connections and cursors in the right place
 cur = conn.cursor()
 
+target_string_to_cleaner = {
+    'apple': AppleJobCleaner,
+    'amazon': AmazonJobCleaner,
+    'ea': EaJobCleaner,
+    'google': GoogleJobCleaner,
+    'microsoft': MicrosoftJobCleaner
+}
 
 @app.route("/")
 def hello_world():
@@ -31,21 +39,24 @@ def hello_world():
 
 @app.route("/job_boards/<target>")
 def load_target(target):
+    retval = None
+    if target == 'all':
+        retval = {}
+        for key in target_string_to_cleaner:
+            retval[key] = json.loads(load_target_helper(key))
+        retval = json.dumps(retval, indent=4)
+    else:
+        retval = load_target_helper(target)
+    return retval
+
+def load_target_helper(target):
     cleaner = BaseCleaner(None)
     r = requests.get(f"{SCRAPER}/{target}")
-    match target:
-        case 'apple':
-            cleaner = AppleJobCleaner(r.json())
-        case 'amazon':
-            cleaner = AmazonJobCleaner(r.json())
-        case 'ea':
-            cleaner = EaJobCleaner(r.json())
-        case 'google':
-            cleaner = GoogleJobCleaner(r.json())
-        case 'microsoft':
-            cleaner = MicrosoftJobCleaner(r.json())
-        case _:
-            print(f'Error: target "{target}" does not match any valid target.')
+
+    if target in target_string_to_cleaner:
+        cleaner = target_string_to_cleaner[target](r.json())
+    else:
+        print(f'Error: target "{target}" does not match any valid target.')
 
     clean_input = cleaner.get_clean_data()
     columns = ['company', 'company_id', 'link', 'title', 'location', 'posting_date', 'last_updated', 'details']
