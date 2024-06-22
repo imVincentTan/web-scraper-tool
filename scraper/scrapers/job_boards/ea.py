@@ -10,7 +10,7 @@ class EaJobScraper(BaseScraper):
         browser.implicitly_wait(20)
 
         jobs = []
-        browser.get('https://ea.gr8people.com/jobs?inp1810=4')
+        browser.get('https://ea.gr8people.com/jobs?page=1&inp1810=4&dir=DESC&sort=colopportunitya1538')
 
         elements = browser.find_element(By.CLASS_NAME, 'search-results-view').find_element(By.TAG_NAME, 'table').find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'tr')
 
