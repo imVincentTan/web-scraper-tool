@@ -10,6 +10,7 @@ from scrapers.job_boards.amazon import AmazonJobScraper
 from scrapers.job_boards.ea import EaJobScraper
 from scrapers.job_boards.google import GoogleJobScraper
 from scrapers.job_boards.microsoft import MicrosoftJobScraper
+from scrapers.job_boards.riotgames import RiotgamesJobScraper
 from flask import Flask
 
 app = Flask(__name__)
@@ -33,6 +34,8 @@ def scrape_target(target):
             a = GoogleJobScraper()
         case 'microsoft':
             a = MicrosoftJobScraper()
+        case 'riotgames':
+            a = RiotgamesJobScraper()
         case _:
             print(f'Error: target "{target}" does not match any valid target.')
     jobs = a.scrape()

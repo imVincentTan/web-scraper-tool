@@ -10,6 +10,7 @@ from cleaners.job_boards.apple import AppleJobCleaner
 from cleaners.job_boards.ea import EaJobCleaner
 from cleaners.job_boards.google import GoogleJobCleaner
 from cleaners.job_boards.microsoft import MicrosoftJobCleaner
+from cleaners.job_boards.riotgames import RiotgamesJobCleaner
 
 app = Flask(__name__)
 
@@ -30,7 +31,8 @@ target_string_to_cleaner = {
     'amazon': AmazonJobCleaner,
     'ea': EaJobCleaner,
     'google': GoogleJobCleaner,
-    'microsoft': MicrosoftJobCleaner
+    'microsoft': MicrosoftJobCleaner,
+    'riotgames': RiotgamesJobCleaner
 }
 
 @app.route("/")
